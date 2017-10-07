@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE generatorConfiguration
+        PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"
+        "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
+
+<generatorConfiguration>
+	<context id="Mysql" targetRuntime="MyBatis3" defaultModelType="flat">
+		<property name="javaFileEncoding" value="UTF-8" />
+		<property name="javaFormatter" value="org.mybatis.generator.api.dom.DefaultJavaFormatter" />
+		<property name="xmlFormatter" value="org.mybatis.generator.api.dom.DefaultXmlFormatter" />
+		<property name="beginningDelimiter" value="`" />
+		<property name="endingDelimiter" value="`" />
+
+		<plugin type="org.mybatis.generator.plugins.ToStringPlugin" />
+		<plugin type="org.mybatis.generator.plugins.CachePlugin" >
+			<property name="cache_type" value="org.mybatis.caches.ehcache.EhcacheCache" />
+		</plugin>
+		<plugin type="org.mybatis.generator.plugins.SerializablePlugin">
+			<property name="suppressJavaInterface" value="false" />
+		</plugin>
+		<plugin type="org.mybatis.generator.plugins.RenameExampleClassPlugin">
+			<property name="searchString" value="Example$" />
+			<property name="replaceString" value="Criteria" />
+		</plugin>
+		<plugin type="com.jiaxiaoxuan.genesis.generator.plugin.GeneratorPlugin">
+			<property name="modelPackage" value="${targetModelPackage}" />
+			<property name="mapperPackage" value="${targetMapperPackage}" />
+			<property name="servicePath" value="${targetServicePath}" />
+			<property name="servicePackage" value="${targetServicePackage}" />
+			<property name="controllerPath" value="${targetControllerPath}" />
+			<property name="controllerPackage" value="${targetControllerPackage}" />
+		</plugin>
+		
+		<commentGenerator type="com.jiaxiaoxuan.genesis.generator.plugin.CommentGenerator">
+			<property name="dateFormat" value="yyyy-MM-dd HH:mm:ss"/>
+         	<property name="suppressAllComments" value="true" />
+      	</commentGenerator>
+		
+		<jdbcConnection driverClass="${targetDriverClass}" connectionURL="${targetDBUrl}" userId="${targetDBName}" password="${targetDBPW}" />
+
+		<javaTypeResolver type="org.mybatis.generator.internal.types.JavaTypeResolverDefaultImpl">
+			<property name="forceBigDecimals" value="false" />
+		</javaTypeResolver>
+
+		<javaModelGenerator targetPackage="${targetModelPackage}" targetProject="${targetModelPath}">
+			<property name="rootClass" value="com.base.Pager" />
+			<property name="enableSubPackages" value="true" />
+			<property name="trimStrings" value="true" />
+		</javaModelGenerator>
+
+		<sqlMapGenerator targetPackage="${targetXMLPackage}" targetProject="${targetResourcesProject}">
+			<property name="enableSubPackages" value="true" />
+		</sqlMapGenerator>
+
+		<javaClientGenerator targetPackage="${targetMapperPackage}" targetProject="${targetMapperPath}" type="XMLMAPPER">
+			<property name="enableSubPackages" value="true" />
+		</javaClientGenerator>
+		
+		<table tableName="%">
+			<generatedKey column="id" sqlStatement="MySQL" identity="true" />
+		</table>
+		
+	</context>
+</generatorConfiguration>

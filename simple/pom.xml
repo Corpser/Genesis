@@ -1,0 +1,187 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <artifactId>genesis</artifactId>
+        <groupId>top.jiaxiaoxuan</groupId>
+        <version>1.0-SNAPSHOT</version>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+
+    <artifactId>simple</artifactId>
+    <properties>
+        <!-- 项目名称 -->
+        <project.name>simple</project.name>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <java.version>1.8</java.version>
+        <!-- MyBatis Generator -->
+        <!-- 数据库配置信息 -->
+        <targetDriverClass>com.mysql.jdbc.Driver</targetDriverClass>
+        <targetDBUrl>jdbc:mysql://127.0.0.1:3306/user</targetDBUrl>
+        <targetDBName>root</targetDBName>
+        <targetDBPW>root</targetDBPW>
+        <targetProjectPath>${basedir}</targetProjectPath>
+        <targetMapperPath>${basedir}/src/main/java/</targetMapperPath>
+        <!-- mapper 路径 -->
+        <targetMapperPackage>com.jiaxiaoxuan.${project.name}.mapper</targetMapperPackage>
+        <targetResourcesProject>${basedir}/src/main/resources</targetResourcesProject>
+        <!-- model 包名及路径 -->
+        <targetModelPackage>com.jiaxiaoxuan.${project.name}.model</targetModelPackage>
+        <targetModelPath>${basedir}/src/main/java</targetModelPath>
+        <!-- service 包名及路径 -->
+        <targetServicePackage>com.jiaxiaoxuan.${project.name}.service</targetServicePackage>
+        <targetServicePath>${basedir}/src/main/java</targetServicePath>
+        <!-- controller 包名 -->
+        <targetControllerPackage>com.jiaxiaoxuan.${project.name}.controller</targetControllerPackage>
+        <targetControllerPath>${basedir}/src/main/java</targetControllerPath>
+        <targetXMLPackage>mapper</targetXMLPackage>
+    </properties>
+
+    <dependencies>
+        <dependency>
+            <groupId>top.jiaxiaoxuan</groupId>
+            <artifactId>generator</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
+    </dependencies>
+
+    <repositories>
+        <repository>
+            <id>public</id>
+            <name>阿里云镜像</name>
+            <url>http://maven.aliyun.com/nexus/content/groups/public/</url>
+            <layout>default</layout>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
+        </repository>
+    </repositories>
+
+    <pluginRepositories>
+        <pluginRepository>
+            <id>public</id>
+            <name>阿里云镜像</name>
+            <url>http://maven.aliyun.com/nexus/content/groups/public/</url>
+            <layout>default</layout>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+            <releases>
+                <updatePolicy>always</updatePolicy>
+            </releases>
+        </pluginRepository>
+    </pluginRepositories>
+    <profiles>
+        <!-- 开发环境 -->
+        <profile>
+            <id>dev</id>
+            <properties>
+                <env>dev</env>
+                <maven.test.skip>true</maven.test.skip>
+            </properties>
+            <!--
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+             -->
+        </profile>
+        <!-- 测试环境 -->
+        <profile>
+            <id>test</id>
+            <properties>
+                <env>test</env>
+                <maven.test.skip>true</maven.test.skip>
+            </properties>
+        </profile>
+        <!-- 生产环境,服务器1 -->
+        <profile>
+            <id>product1</id>
+            <properties>
+                <env>product1</env>
+                <maven.test.skip>true</maven.test.skip>
+            </properties>
+        </profile>
+        <!-- 生产环境,服务器2 -->
+        <profile>
+            <id>product2</id>
+            <properties>
+                <env>product2</env>
+                <maven.test.skip>true</maven.test.skip>
+            </properties>
+        </profile>
+    </profiles>
+
+    <build>
+    <finalName>${project.name}-biz</finalName>
+    <resources>
+        <!-- 指定 src/main/resources下所有文件及文件夹为资源文件 -->
+        <resource>
+            <directory>src/main/resources</directory>
+            <targetPath>${project.build.directory}/classes</targetPath>
+            <includes>
+                <include>**/*</include>
+            </includes>
+            <filtering>true</filtering>
+        </resource>
+        <!-- 根据env部署环境值，把对应环境的配置文件拷贝到classes目录 -->
+        <!--<resource>-->
+            <!--<directory>deploy/${env}</directory>-->
+            <!--<targetPath>${project.build.directory}/classes</targetPath>-->
+            <!--<filtering>true</filtering>-->
+        <!--</resource>-->
+    </resources>
+
+    <plugins>
+        <!-- 生成代码执行：clean compile mybatis-generator:generate -->
+        <plugin>
+            <groupId>org.mybatis.generator</groupId>
+            <artifactId>mybatis-generator-maven-plugin</artifactId>
+            <version>1.3.2</version>
+            <configuration>
+                <configurationFile>${basedir}/src/main/resources/generator/generatorConfig.xml</configurationFile>
+                <overwrite>true</overwrite>
+                <verbose>true</verbose>
+            </configuration>
+            <dependencies>
+                <dependency>
+                    <groupId>mysql</groupId>
+                    <artifactId>mysql-connector-java</artifactId>
+                    <version>${mysql.version}</version>
+                </dependency>
+                <dependency>
+                    <groupId>top.jiaxiaoxuan</groupId>
+                    <artifactId>generator</artifactId>
+                    <version>1.0-SNAPSHOT</version>
+                </dependency>
+            </dependencies>
+        </plugin>
+        <!-- archetype:create-from-project -->
+        <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-archetype-plugin</artifactId>
+            <version>2.2</version>
+            <configuration>
+                <archetypeArtifactId>caixin-genesis-archetype</archetypeArtifactId>
+                <archetypeGroupId>caixin-genesis</archetypeGroupId>
+                <archetypeVersion>0.0.1-SNAPSHOT</archetypeVersion>
+                <groupId>com.caixin</groupId>
+                <packageName>com.caixin</packageName>
+            </configuration>
+        </plugin>
+        <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-compiler-plugin</artifactId>
+            <configuration>
+                <source>1.8</source>
+                <target>1.8</target>
+            </configuration>
+        </plugin>
+        <plugin>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-maven-plugin</artifactId>
+        </plugin>
+    </plugins>
+    </build>
+
+</project>

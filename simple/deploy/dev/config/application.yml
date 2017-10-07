@@ -1,0 +1,100 @@
+#服务器端口
+server:
+    port: 11233
+
+#SpringBoot配置
+spring:
+    application:
+       #应用名称
+       name: simple
+    cloud:
+      inetutils:
+        ignored-interfaces:
+          - cn.test.*
+      #调用链监控配置
+      stream:
+         kafka:
+           binder:
+             brokers:  10.10.205.49:9092,10.10.205.50:9092,10.10.205.51:9092
+             zk-nodes: 10.10.205.49:2181,10.10.205.50:2181,10.10.205.51:2181
+    #数据库配置
+    datasource:
+      type: com.zaxxer.hikari.HikariDataSource
+      url: jdbc:mysql://localhost:3306/simple?Unicode=true&characterEncoding=UTF-8
+      username: simple
+      password: ENC(IiKf/PMhzf8yAymAm3ueLg==)
+      hikari:
+        maximum-pool-size: 10
+        minimum-idle: 1
+        connection-init-sql: SELECT 1 FROM DUAL
+        connection-test-query: SELECT 1 FROM DUAL
+        connection-timeout: 1000
+        idle-timeout: 10000
+        pool-name: simplePool
+    #Json转换配置
+    jackson:
+      date-format: yyyy-MM-dd HH:mm:ss
+      time-zone: Asia/Shanghai
+      default-property-inclusion: NON_NULL
+      
+#eureka服务注册地址
+eureka:
+  instance:
+    prefer-ip-address: true
+  client:
+    fetch-registry: true
+    register-with-eureka: true
+    service-url: 
+           defaultZone: http://10.10.205.49:8001/eureka/,http://10.10.205.50:8001/eureka/,http://10.10.205.51:8001/eureka/
+
+#日志配置
+logging:
+    config: classpath:logback.xml
+
+#mybatis配置
+mybatis:
+    mapperLocations: classpath:mapper/*.xml
+    typeAliasesPackage: com.caixin.*.model
+
+#健康监控配置及管理
+management:
+  security:
+    enabled: false
+endpoints:
+  health:
+    enabled: true
+    sensitive: false
+  shutdown:
+    enabled: true
+    sensitive: true
+
+#系统信息配置
+info:
+  app:
+    name: "@project.name@"
+    description: "@project.description@"  
+    version: "@project.version@"  
+    spring-boot-version: "@project.parent.version@"
+
+#swagger-ui页面访问密码
+security:
+  user:
+    name: caixin
+    password: caixin123
+  basic:
+    path:
+      - /swagger-ui.html
+
+#数据库密码加密盐值
+jasypt:
+  encryptor:
+    password: simple
+
+## 请求超时设置
+hystrix:
+  command: 
+    default:
+      execution:
+        isolation:
+          thread:
+            timeoutInMilliseconds: 3000
