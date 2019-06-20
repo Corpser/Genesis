@@ -1,0 +1,12 @@
+# Created by .ignore support plugin (hsz.mobi)
+将删除 .idea/
+将删除 generator/generator.iml
+将删除 generator/target/
+将删除 genesis.iml
+将删除 simple/simple.iml
+将删除 simple/target/
+将删除 target/
+/simple/simple.iml
+/genesis.iml
+/generator/generator.iml
+/.idea/
